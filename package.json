@@ -18,6 +18,8 @@
   "license": "BSD",
   "gitHead": "30a352c9628281091b87d15120574e336c95e339",
   "devDependencies": {
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-coffee": "~0.7.0"
   }
 }
