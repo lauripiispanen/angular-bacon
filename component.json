@@ -10,5 +10,10 @@
   "dependencies": {
     "bacon": "~0.3.14",
     "angular": "~1.0.6"
+  },
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "chai": "~1.6.0",
+    "angular-mocks": "~1.0.6"
   }
 }

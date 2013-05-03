@@ -13,6 +13,27 @@ module.exports = function(grunt) {
         src: '*.coffee',
         dest: 'dist',
         ext: '.js'
+      },
+      test: {
+        expand: true,
+        flatten: true,
+        cwd: 'test',
+        src: '*.coffee',
+        dest: 'test',
+        ext: '.js'        
+      }
+    },
+    jasmine: {
+      spec: {
+        src: 'dist/angular-bacon.js',
+        options: {
+          specs: 'test/angular-bacon-spec.js',
+          vendor: [
+            'components/bacon/dist/Bacon.js',
+            'components/angular/angular.js',
+            'components/angular-mocks/angular-mocks.js'
+          ]
+        }
       }
     },
     uglify: {
@@ -36,9 +57,11 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', ['coffee', 'uglify']);
+  grunt.registerTask('test', ['coffee', 'jasmine']);
+  grunt.registerTask('default', ['test', 'uglify']);
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
 
 };
