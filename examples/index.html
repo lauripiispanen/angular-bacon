@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>angular-bacon example</title>
+        <script type="text/javascript" src="../components/angular/angular.js"></script>
+        <script type="text/javascript" src="../components/bacon/dist/Bacon.js"></script>
+        <script type="text/javascript" src="../dist/angular-bacon.js"></script>
+        <script type="text/javascript" src="form-validation.js"></script>
+    </head>
+    <body ng-app="example">
+        <form ng-controller="form">
+            <label>Username</label>
+            <br />
+
+            <input type="text" ng-model="username" />
+            <div ng-switch="passwordState">
+                <span ng-switch-when="empty"></span>
+                <span ng-switch-when="loading">Loading</span>
+                <span ng-switch-when="invalid">Invalid</span>
+                <span ng-switch-when="valid">Valid</span>
+            </div>
+
+            <label>Password</label>
+            <br />
+
+            <input type="text" ng-model="password" />
+            <br />
+
+            <label>Confirm password</label>
+            <br />
+
+            <input type="text" ng-model="passwordConfirm" />
+            <br />
+
+            <input type="submit" ng-disabled="!formValid" />
+        </form>
+    </body>
+</html>
