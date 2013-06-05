@@ -1,17 +1,21 @@
 angular
     .module("angular-bacon", [])
     .run ["$rootScope", ($rootScope) ->
-        $rootScope.$watchAsStream = (watchExp, objectEquality) ->
+        $rootScope.$watchAsProperty = (watchExp, objectEquality) ->
             bus = new Bacon.Bus
             this.$watch watchExp, (newValue) ->
                 bus.push newValue
             , objectEquality
-            bus
+            initialValue = this.$eval(watchExp)
+            if typeof initialValue != "undefined"
+                bus.toProperty(initialValue)
+            else
+                bus.toProperty()
 
-        $rootScope.digestStreams = (streams) ->
+        $rootScope.digestObservables = (observables) ->
             self = this
-            angular.forEach streams, (stream, key) ->
-                stream.digest self, key
+            angular.forEach observables, (observable, key) ->
+                observable.digest self, key
 
         Bacon.Observable.prototype.digest = ($scope, prop) ->
             this.onValue (val) ->

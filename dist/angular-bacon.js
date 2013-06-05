@@ -1,21 +1,26 @@
 (function() {
   angular.module("angular-bacon", []).run([
     "$rootScope", function($rootScope) {
-      $rootScope.$watchAsStream = function(watchExp, objectEquality) {
-        var bus;
+      $rootScope.$watchAsProperty = function(watchExp, objectEquality) {
+        var bus, initialValue;
 
         bus = new Bacon.Bus;
         this.$watch(watchExp, function(newValue) {
           return bus.push(newValue);
         }, objectEquality);
-        return bus;
+        initialValue = this.$eval(watchExp);
+        if (typeof initialValue !== "undefined") {
+          return bus.toProperty(initialValue);
+        } else {
+          return bus.toProperty();
+        }
       };
-      $rootScope.digestStreams = function(streams) {
+      $rootScope.digestObservables = function(observables) {
         var self;
 
         self = this;
-        return angular.forEach(streams, function(stream, key) {
-          return stream.digest(self, key);
+        return angular.forEach(observables, function(observable, key) {
+          return observable.digest(self, key);
         });
       };
       return Bacon.Observable.prototype.digest = function($scope, prop) {

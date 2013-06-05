@@ -3,21 +3,32 @@ beforeEach module 'angular-bacon'
 describe "rootScope", ->
     it "gets augmented", ->
         inject ($rootScope) ->
-            expect(typeof $rootScope.$watchAsStream).toEqual 'function'
+            expect(typeof $rootScope.$watchAsProperty).toEqual 'function'
 
-    it "can create streams out of watch expressions", ->
+    it "can create properties out of watch expressions", ->
         inject ($rootScope) ->
-            done = false
-
             $rootScope.foo = true
-            $rootScope.$watchAsStream('foo').onValue (val) ->
-                expect(val).toEqual 'bar'
-                done = true
+            values = []
+            $rootScope.$watchAsProperty('foo').onValue (val) ->
+                values.push val
 
             $rootScope.$apply ->
                 $rootScope.foo = 'bar'
 
-            waitsFor -> done
+            expect(values[0]).toEqual true
+            expect(values[1]).toEqual 'bar'
+
+    it "will not push an initial value if one isn't defined", ->
+        inject ($rootScope) ->
+            values = []
+            $rootScope.$watchAsProperty('foo').onValue (val) ->
+                values.push val
+
+            $rootScope.$apply ->
+                $rootScope.foo = 'bar'
+
+            expect(values[0]).toEqual 'bar'
+
 
     it "can digest observables back to scope", ->
         inject ($rootScope) ->
@@ -46,7 +57,7 @@ describe "rootScope", ->
             bus2 = new Bacon.Bus
             bus3 = new Bacon.Bus
 
-            $rootScope.digestStreams 
+            $rootScope.digestObservables 
                 first: bus
                 second: bus2
                 third: bus3

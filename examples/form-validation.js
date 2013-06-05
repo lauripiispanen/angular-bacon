@@ -12,12 +12,11 @@ angular.
             return it;
         }
         var passwordInput = $scope
-                .$watchAsStream('password')
-                .toProperty('')
+                .$watchAsProperty('password')
 
         var passwordsEqual = passwordInput
                 .combine(
-                    $scope.$watchAsStream('passwordConfirm'),
+                    $scope.$watchAsProperty('passwordConfirm'),
                     function(pass, confirm) {
                         return {
                             password: pass,
@@ -31,13 +30,13 @@ angular.
                 .toProperty()
 
         var usernameInput = $scope
-                .$watchAsStream('username')
-                .toProperty()
+                .$watchAsProperty('username')
 
         var passwordIsValid = passwordInput
                 .map(function(it) { return it && it.length >= 5 })
 
         var usernameIsFree = usernameInput
+                .changes()
                 .filter(function(it) { return it.length > 2 })
                 .flatMapLatest(function(it) { return Bacon.later(2000, it === "user"); })
                 .merge(usernameInput.map(false))
