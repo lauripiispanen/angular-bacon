@@ -68,3 +68,16 @@ describe "rootScope", ->
             expect($rootScope.first).toEqual 'foo'
             expect($rootScope.second).toEqual 'bar'
             expect($rootScope.third).toBeUndefined()
+
+    it "can digest on deeply nested properties of $scope", ->
+        inject ($rootScope) ->
+            bus = new Bacon.Bus
+
+            bus.digest $rootScope, 'foo.baz'
+
+            expect($rootScope.foo).toBeUndefined()
+
+            bus.push 'bar'
+
+            expect($rootScope.foo.baz).toEqual 'bar'
+
