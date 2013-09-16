@@ -1,6 +1,6 @@
 angular
     .module("angular-bacon", [])
-    .run ["$rootScope", ($rootScope) ->
+    .run ["$rootScope", "$parse", ($rootScope, $parse) ->
         $rootScope.$watchAsProperty = (watchExp, objectEquality) ->
             bus = new Bacon.Bus
             this.$watch watchExp, (newValue) ->
@@ -18,10 +18,11 @@ angular
                 observable.digest self, key
 
         Bacon.Observable.prototype.digest = ($scope, prop) ->
+            propSetter = $parse(prop).assign
             this.onValue (val) ->
                 if(!$scope.$$phase)
                     $scope.$apply () ->
-                        $scope[prop] = val
+                        propSetter($scope, val)
                 else
-                    $scope[prop] = val
+                    propSetter($scope, val)
     ]
