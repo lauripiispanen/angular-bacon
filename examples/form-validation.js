@@ -3,17 +3,17 @@ angular.
     controller('form', function($scope) {
         $scope.username = ''
 
-        var greaterThan = function(num) {
+        var longerThan = function(num) {
             return function(it) {
                 return it && it.length > num;
             }
         }
-        var greaterThanOrEqual = function(num) {
+        var longerThanOrEqual = function(num) {
             return function(it) {
                 return it && it.length >= num;
             }
         }
-        var lowerThan = function (num) {
+        var shorterThan = function (num) {
             return function (it) {
                 return it && it.length < num;
             }
@@ -43,11 +43,11 @@ angular.
                 .$watchAsProperty('username')
 
         var passwordIsValid = passwordInput
-                .map(greaterThanOrEqual(5))
+                .map(longerThanOrEqual(5))
 
         var usernameIsFree = usernameInput
                 .changes()
-                .filter(greaterThan(2))
+                .filter(longerThan(2))
                 .flatMapLatest(function(it) { return Bacon.later(2000, it === "user"); })
                 .merge(usernameInput.map(false))
                 .toProperty(false)
@@ -65,7 +65,7 @@ angular.
             .merge(usernameInput.map(Bacon.constant("loading")))
             .merge(
                 usernameInput
-                    .filter(lowerThan(2))
+                    .filter(shorterThan(2))
                     .map(Bacon.constant("empty"))
                 )
             .digest($scope, 'usernameState')
