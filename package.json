@@ -1,6 +1,6 @@
 {
   "name": "angular-bacon",
-  "version": "0.0.1",
+  "version": "1.1.2",
   "description": "bacon.js bindings for AngularJS",
   "scripts": {
     "test": "grunt test"
@@ -15,7 +15,7 @@
     "frp"
   ],
   "author": "Lauri Piispanen",
-  "license": "BSD",
+  "license": "MIT",
   "gitHead": "30a352c9628281091b87d15120574e336c95e339",
   "devDependencies": {
     "grunt": "~0.4.1",
