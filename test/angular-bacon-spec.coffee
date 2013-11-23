@@ -42,6 +42,20 @@ describe "rootScope", ->
 
             expect($rootScope.foo).toEqual 'bar'
 
+    it "can chain on digest", ->
+        inject ($rootScope) ->
+            bus = new Bacon.Bus
+
+            bus.digest($rootScope, 'foo').digest($rootScope, 'bar')
+
+            expect($rootScope.foo).toBeUndefined()
+            expect($rootScope.bar).toBeUndefined()
+
+            bus.push 'baz'
+
+            expect($rootScope.foo).toEqual 'baz'
+            expect($rootScope.bar).toEqual 'baz'
+
     it "can digest even if $apply already in process", ->
         inject ($rootScope) ->
             bus = new Bacon.Bus
@@ -81,3 +95,29 @@ describe "rootScope", ->
 
             expect($rootScope.foo.baz).toEqual 'bar'
 
+    it "ends the stream when the $scope is $destroyed", ->
+        inject ($rootScope) ->
+            scope = $rootScope.$new()
+            ended = false
+            scope.$watchAsProperty('foo').onEnd ->
+                ended = true
+
+            expect(ended).toEqual false
+
+            scope.$destroy()
+
+            expect(ended).toEqual true
+
+    it "cleans up digests when the $scope is $destroyed", ->
+        inject ($rootScope) ->
+            scope = $rootScope.$new()
+            bus = new Bacon.Bus
+            bus.digest scope, 'foo'
+            
+            bus.push 'bar'
+            expect(scope.foo).toEqual 'bar'
+
+            scope.$destroy()
+
+            bus.push 'baz'
+            expect(scope.foo).toEqual 'bar'

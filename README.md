@@ -26,3 +26,14 @@ Examples
 --------
 
 For examples, see [here](examples/form-validation.js). This example somewhat mimics raimohanska's [awesome](http://nullzzz.blogspot.fi/2012/11/baconjs-tutorial-part-ii-get-started.html) bacon.js [tutorials](http://nullzzz.blogspot.fi/2012/12/baconjs-tutorial-part-iii-ajax-and-stuff.html): it features a simple login validation form, where a slow backend "is-nickname-taken" check is simulated by a stream with a 5-second delay. In addition, the two selected passwords must match, and be at least five characters long before the submit button is enabled.
+
+Changelog
+---------
+
+**1.2.0**
+
+End _$watchAsProperty()_ streams and unsubscribe _.digest()_ listeners when scope is destroyed.
+
+**1.1.2**
+
+Add MIT License.

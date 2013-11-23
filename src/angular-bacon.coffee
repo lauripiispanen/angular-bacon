@@ -6,6 +6,7 @@ angular
             this.$watch watchExp, (newValue) ->
                 bus.push newValue
             , objectEquality
+            this.$on '$destroy', bus.end
             initialValue = this.$eval(watchExp)
             if typeof initialValue != "undefined"
                 bus.toProperty(initialValue)
@@ -19,10 +20,15 @@ angular
 
         Bacon.Observable.prototype.digest = ($scope, prop) ->
             propSetter = $parse(prop).assign
-            this.onValue (val) ->
-                if(!$scope.$$phase)
-                    $scope.$apply () ->
-                        propSetter($scope, val)
-                else
-                    propSetter($scope, val)
+            unsubscribe = this.subscribe (e) ->
+                if (e.hasValue())
+                    if(!$scope.$$phase)
+                        $scope.$apply ->
+                            propSetter($scope, e.value())
+                    else
+                        propSetter($scope, e.value())
+
+            $scope.$on '$destroy', unsubscribe
+            this
+
     ]

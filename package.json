@@ -1,6 +1,6 @@
 {
   "name": "angular-bacon",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "bacon.js bindings for AngularJS",
   "scripts": {
     "test": "grunt test"

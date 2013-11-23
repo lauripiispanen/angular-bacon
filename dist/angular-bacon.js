@@ -7,6 +7,7 @@
         this.$watch(watchExp, function(newValue) {
           return bus.push(newValue);
         }, objectEquality);
+        this.$on('$destroy', bus.end);
         initialValue = this.$eval(watchExp);
         if (typeof initialValue !== "undefined") {
           return bus.toProperty(initialValue);
@@ -22,17 +23,21 @@
         });
       };
       return Bacon.Observable.prototype.digest = function($scope, prop) {
-        var propSetter;
+        var propSetter, unsubscribe;
         propSetter = $parse(prop).assign;
-        return this.onValue(function(val) {
-          if (!$scope.$$phase) {
-            return $scope.$apply(function() {
-              return propSetter($scope, val);
-            });
-          } else {
-            return propSetter($scope, val);
+        unsubscribe = this.subscribe(function(e) {
+          if (e.hasValue()) {
+            if (!$scope.$$phase) {
+              return $scope.$apply(function() {
+                return propSetter($scope, e.value());
+              });
+            } else {
+              return propSetter($scope, e.value());
+            }
           }
         });
+        $scope.$on('$destroy', unsubscribe);
+        return this;
       };
     }
   ]);
