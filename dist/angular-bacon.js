@@ -3,6 +3,7 @@
     "$rootScope", "$parse", function($rootScope, $parse) {
       $rootScope.$watchAsProperty = function(watchExp, objectEquality) {
         var bus, initialValue;
+
         bus = new Bacon.Bus;
         this.$watch(watchExp, function(newValue) {
           return bus.push(newValue);
@@ -17,6 +18,7 @@
       };
       $rootScope.digestObservables = function(observables) {
         var self;
+
         self = this;
         return angular.forEach(observables, function(observable, key) {
           return observable.digest(self, key);
@@ -24,6 +26,7 @@
       };
       return Bacon.Observable.prototype.digest = function($scope, prop) {
         var propSetter, unsubscribe;
+
         propSetter = $parse(prop).assign;
         unsubscribe = this.subscribe(function(e) {
           if (e.hasValue()) {

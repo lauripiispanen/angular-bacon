@@ -36,6 +36,9 @@ module.exports = function(grunt) {
         }
       }
     },
+    clean: {
+      release: [ "dist" ]
+    },
     uglify: {
       options: {
       },
@@ -58,10 +61,11 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('test', ['coffee', 'jasmine']);
-  grunt.registerTask('default', ['test', 'uglify']);
+  grunt.registerTask('default', ['clean','test', 'uglify']);
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
 };
