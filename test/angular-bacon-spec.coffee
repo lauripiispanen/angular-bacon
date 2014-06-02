@@ -1,9 +1,13 @@
 beforeEach module 'angular-bacon'
 
 describe "rootScope", ->
-    it "gets augmented", ->
+    it "gets augmented with $watchAsProperty", ->
         inject ($rootScope) ->
             expect(typeof $rootScope.$watchAsProperty).toEqual 'function'
+
+    it "gets augmented with $watchCollectionAsProperty", ->
+        inject ($rootScope) ->
+            expect(typeof $rootScope.$watchCollectionAsProperty).toEqual 'function'
 
     it "can create properties out of watch expressions", ->
         inject ($rootScope) ->
@@ -28,6 +32,30 @@ describe "rootScope", ->
                 $rootScope.foo = 'bar'
 
             expect(values[0]).toEqual 'bar'
+
+    it "can create collection properties out of watch expressions", ->
+        inject ($rootScope) ->
+            $rootScope.coll = [1]
+            values = []
+            $rootScope.$watchCollectionAsProperty('coll').onValue (val) ->
+                values.push val
+
+            $rootScope.$apply ->
+                $rootScope.coll = [1,2]
+
+            expect(values[0]).toEqual [1]
+            expect(values[1]).toEqual [1,2]
+
+    it "will not push an initial collection value if one isn't defined", ->
+        inject ($rootScope) ->
+            values = []
+            $rootScope.$watchAsProperty('coll').onValue (val) ->
+                values.push val
+
+            $rootScope.$apply ->
+                $rootScope.coll = [1,2]
+
+            expect(values[0]).toEqual [1,2]
 
 
     it "can digest observables back to scope", ->

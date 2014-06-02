@@ -1,17 +1,24 @@
 angular
     .module("angular-bacon", [])
     .run ["$rootScope", "$parse", ($rootScope, $parse) ->
-        $rootScope.$watchAsProperty = (watchExp, objectEquality) ->
+        watcherBus = (scope, watchExp, objectEquality, watchMethod) ->
             bus = new Bacon.Bus
-            this.$watch watchExp, (newValue) ->
+            scope[watchMethod] watchExp, (newValue) ->
                 bus.push newValue
             , objectEquality
-            this.$on '$destroy', bus.end
-            initialValue = this.$eval(watchExp)
+            scope.$on '$destroy', bus.end
+            initialValue = scope.$eval(watchExp)
             if typeof initialValue != "undefined"
                 bus.toProperty(initialValue)
             else
                 bus.toProperty()
+
+
+        $rootScope.$watchAsProperty = (watchExp, objectEquality) ->
+            watcherBus this, watchExp, objectEquality, '$watch'
+
+        $rootScope.$watchCollectionAsProperty = (watchExp, objectEquality) ->
+            watcherBus this, watchExp, objectEquality, '$watchCollection'
 
         $rootScope.digestObservables = (observables) ->
             self = this
