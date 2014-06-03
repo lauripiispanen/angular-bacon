@@ -14,6 +14,12 @@ Simply require *angular-bacon* in your AngularJS module, and both $rootScope and
 
 Exposes an AngularJS [scope](http://docs.angularjs.org/api/ng.$rootScope.Scope) property as a bacon.js [property](https://github.com/raimohanska/bacon.js#property). If the property already has a value in the scope (i.e. is not _undefined_), that value becomes the property's initial value.
 
+**$scope.$watchCollectionAsProperty(property)**
+
+Exposes an AngularJS [scope](http://docs.angularjs.org/api/ng.$rootScope.Scope) Array or Object property as a bacon.js [property](https://github.com/raimohanska/bacon.js#property). If the property already has a value in the scope (i.e. is not _undefined_), that value becomes the property's initial value.
+
+This function is equivalent to `$scope.$watchAsProperty` but using `$watchCollection` instead of `$watch`, so that changes in Array and Object values are properly detected.
+
 **Bacon.Observable.digest($scope, property)**
 
 Digests a bacon.js observable (stream or property) back to an AngularJS scope property. Attaches an .onValue handler to the observable, which simply $applies the property in the selected scope with the selected key.

@@ -1,24 +1,29 @@
 (function() {
   angular.module("angular-bacon", []).run([
     "$rootScope", "$parse", function($rootScope, $parse) {
-      $rootScope.$watchAsProperty = function(watchExp, objectEquality) {
+      var watcherBus;
+      watcherBus = function(scope, watchExp, objectEquality, watchMethod) {
         var bus, initialValue;
-
         bus = new Bacon.Bus;
-        this.$watch(watchExp, function(newValue) {
+        scope[watchMethod](watchExp, function(newValue) {
           return bus.push(newValue);
         }, objectEquality);
-        this.$on('$destroy', bus.end);
-        initialValue = this.$eval(watchExp);
+        scope.$on('$destroy', bus.end);
+        initialValue = scope.$eval(watchExp);
         if (typeof initialValue !== "undefined") {
           return bus.toProperty(initialValue);
         } else {
           return bus.toProperty();
         }
       };
+      $rootScope.$watchAsProperty = function(watchExp, objectEquality) {
+        return watcherBus(this, watchExp, objectEquality, '$watch');
+      };
+      $rootScope.$watchCollectionAsProperty = function(watchExp, objectEquality) {
+        return watcherBus(this, watchExp, objectEquality, '$watchCollection');
+      };
       $rootScope.digestObservables = function(observables) {
         var self;
-
         self = this;
         return angular.forEach(observables, function(observable, key) {
           return observable.digest(self, key);
