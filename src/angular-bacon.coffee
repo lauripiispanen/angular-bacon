@@ -38,4 +38,20 @@ angular
             $scope.$on '$destroy', unsubscribe
             this
 
+        $rootScope.$asEventStream = (event, names) ->
+            $scope = this;
+            Bacon.fromBinder (sink) ->
+                end = $scope.$on event, (event) ->
+                    if names 
+                    then event.args = Bacon._.object names, Array.prototype.slice.call(arguments, 1)
+                    else event.args = Array.prototype.slice.call(arguments, 1)
+
+                    ret = sink(event);
+                    if (ret == Bacon.noMore)
+                        end()
+
+                $scope.$on '$destroy', () ->
+                    sink new Bacon.End()
+
+                end
     ]
