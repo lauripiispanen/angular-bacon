@@ -8,7 +8,7 @@
     "components"
   ],
   "dependencies": {
-    "bacon": "~0.3.14",
+    "bacon": "~0.7.14",
     "angular": "~1.2.16"
   },
   "devDependencies": {
