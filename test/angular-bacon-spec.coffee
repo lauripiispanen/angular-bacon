@@ -149,3 +149,32 @@ describe "rootScope", ->
 
             bus.push 'baz'
             expect(scope.foo).toEqual 'bar'
+
+    it "won't stream an event if none triggered", ->
+        inject ($rootScope) ->
+            scope = $rootScope.$new()
+            stream = scope.eventAsStream "testEvent"
+            eventReceived = false
+            stream.onValue (event) ->
+               eventReceived = true
+            expect(eventReceived).toEqual false
+
+    it "will stream triggered events", ->
+        inject ($rootScope) ->
+            scope = $rootScope.$new()
+            stream = scope.eventAsStream "testEvent"
+            eventReceived = false
+            stream.onValue (event) ->
+               eventReceived = true
+            scope.$emit "testEvent"
+            expect(eventReceived).toEqual true
+
+    it "will pass event parameters to stream", ->
+        inject ($rootScope) ->
+            scope = $rootScope.$new()
+            stream = scope.eventAsStream "testEvent"
+            parameter = null
+            stream.onValue (parameters) ->
+               parameter = parameters[1]
+            scope.$emit "testEvent", "test"
+            expect(parameter).toEqual "test"

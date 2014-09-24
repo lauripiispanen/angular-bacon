@@ -20,6 +20,10 @@ Exposes an AngularJS [scope](http://docs.angularjs.org/api/ng.$rootScope.Scope) 
 
 This function is equivalent to `$scope.$watchAsProperty` but using `$watchCollection` instead of `$watch`, so that changes in Array and Object values are properly detected.
 
+**$scope.eventAsStream(eventName)**
+
+Exposes scope events as an EventStream.  The the stream value will be event object and any passed parameters as an array.
+
 **Bacon.Observable.digest($scope, property)**
 
 Digests a bacon.js observable (stream or property) back to an AngularJS scope property. Attaches an .onValue handler to the observable, which simply $applies the property in the selected scope with the selected key.

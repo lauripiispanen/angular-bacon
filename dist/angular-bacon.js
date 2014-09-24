@@ -29,9 +29,16 @@
           return observable.digest(self, key);
         });
       };
+      $rootScope.eventAsStream = function(eventName) {
+        var bus;
+        bus = new Bacon.Bus;
+        this.$on(eventName, function() {
+          return bus.push(arguments);
+        });
+        return bus;
+      };
       return Bacon.Observable.prototype.digest = function($scope, prop) {
         var propSetter, unsubscribe;
-
         propSetter = $parse(prop).assign;
         unsubscribe = this.subscribe(function(e) {
           if (e.hasValue()) {
