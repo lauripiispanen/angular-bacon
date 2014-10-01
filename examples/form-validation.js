@@ -15,7 +15,7 @@ angular.
         }
         var shorterThan = function (num) {
             return function (it) {
-                return it && it.length < num;
+                return typeof it === "string" && it.length < num;
             }
         }
         var identity = function(it) {
