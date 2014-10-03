@@ -33,7 +33,10 @@
         var bus;
         bus = new Bacon.Bus;
         this.$on(eventName, function() {
-          return bus.push(arguments);
+          bus.push(arguments);
+          if (eventName === "$destroy") {
+            return bus.end();
+          }
         });
         return bus;
       };

@@ -29,6 +29,7 @@ angular
             bus = new Bacon.Bus
             this.$on eventName, ->
                 bus.push arguments
+                bus.end() if eventName=="$destroy"
             bus
 
         Bacon.Observable.prototype.digest = ($scope, prop) ->
