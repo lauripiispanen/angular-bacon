@@ -28,6 +28,10 @@ Digests a bacon.js observable (stream or property) back to an AngularJS scope pr
 
 Digests multiple bacon.js observables at once. Simple syntactic sugar, when multiple observables are involved. _observables_ is a map with object keys representing $scope property names into which the observables are digested into.
 
+**$scope.$asEventStream(event, [argumentNames])**
+
+AngularJS events as Bacon.[EventStream](https://github.com/baconjs/bacon.js#eventstream). _event_ is a name of the event.
+
 Examples
 --------
 
