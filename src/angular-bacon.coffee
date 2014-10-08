@@ -13,7 +13,6 @@ angular
             else
                 bus.toProperty()
 
-
         $rootScope.$watchAsProperty = (watchExp, objectEquality) ->
             watcherBus this, watchExp, objectEquality, '$watch'
 
@@ -54,4 +53,4 @@ angular
                     sink new Bacon.End()
 
                 end
-    ]
+    ]   
