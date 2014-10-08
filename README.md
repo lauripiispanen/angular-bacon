@@ -36,6 +36,10 @@ For examples, see [here](examples/form-validation.js). This example somewhat mim
 Changelog
 ---------
 
+**1.3.1**
+
+Bump bacon.js to newer version.
+
 **1.3.0**
 
 Add _$watchCollectionAsProperty()_. Requires Angular 1.2+.

@@ -15,7 +15,7 @@ angular.
         }
         var shorterThan = function (num) {
             return function (it) {
-                return it && it.length < num;
+                return typeof it === "string" && it.length < num;
             }
         }
         var identity = function(it) {
@@ -49,7 +49,7 @@ angular.
                 .changes()
                 .filter(longerThan(2))
                 .flatMapLatest(function(it) { return Bacon.later(2000, it === "user"); })
-                .merge(usernameInput.map(false))
+                .merge(usernameInput.map(false).changes())
                 .toProperty(false)
 
         usernameIsFree
@@ -62,11 +62,12 @@ angular.
             .filter(identity)
             .map(Bacon.constant("free"))
             .merge(usernameIsFree.changes().not().filter(identity).map(Bacon.constant("taken")))
-            .merge(usernameInput.map(Bacon.constant("loading")))
+            .merge(usernameInput.map(Bacon.constant("loading")).changes())
             .merge(
                 usernameInput
                     .filter(shorterThan(2))
                     .map(Bacon.constant("empty"))
+                    .changes()
                 )
             .digest($scope, 'usernameState')
 
