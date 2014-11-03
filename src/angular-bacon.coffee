@@ -25,6 +25,13 @@ angular
             angular.forEach observables, (observable, key) ->
                 observable.digest self, key
 
+        $rootScope.eventAsStream = (eventName) ->
+            bus = new Bacon.Bus
+            this.$on eventName, ->
+                bus.push arguments
+            this.$on '$destroy', bus.end
+            bus
+
         Bacon.Observable.prototype.digest = ($scope, prop) ->
             propSetter = $parse(prop).assign
             unsubscribe = this.subscribe (e) ->
