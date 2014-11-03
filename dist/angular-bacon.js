@@ -33,11 +33,9 @@
         var bus;
         bus = new Bacon.Bus;
         this.$on(eventName, function() {
-          bus.push(arguments);
-          if (eventName === "$destroy") {
-            return bus.end();
-          }
+          return bus.push(arguments);
         });
+        this.$on('$destroy', bus.end);
         return bus;
       };
       return Bacon.Observable.prototype.digest = function($scope, prop) {
