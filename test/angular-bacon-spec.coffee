@@ -9,6 +9,13 @@ describe "rootScope", ->
         inject ($rootScope) ->
             expect(typeof $rootScope.$watchCollectionAsProperty).toEqual 'function'
 
+    it "augmentations are available in isolate scopes", ->
+        inject ($rootScope) ->
+            scope = $rootScope.$new true
+            expect(typeof scope.$watchAsProperty).toEqual 'function'
+            expect(typeof scope.$watchCollectionAsProperty).toEqual 'function'
+            expect(typeof scope.digestObservables).toEqual 'function'
+
     it "can create properties out of watch expressions", ->
         inject ($rootScope) ->
             $rootScope.foo = true

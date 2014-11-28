@@ -16,13 +16,13 @@
           return bus.toProperty();
         }
       };
-      $rootScope.$watchAsProperty = function(watchExp, objectEquality) {
+      $rootScope.__proto__.$watchAsProperty = function(watchExp, objectEquality) {
         return watcherBus(this, watchExp, objectEquality, '$watch');
       };
-      $rootScope.$watchCollectionAsProperty = function(watchExp, objectEquality) {
+      $rootScope.__proto__.$watchCollectionAsProperty = function(watchExp, objectEquality) {
         return watcherBus(this, watchExp, objectEquality, '$watchCollection');
       };
-      $rootScope.digestObservables = function(observables) {
+      $rootScope.__proto__.digestObservables = function(observables) {
         var self;
         self = this;
         return angular.forEach(observables, function(observable, key) {
@@ -31,7 +31,6 @@
       };
       return Bacon.Observable.prototype.digest = function($scope, prop) {
         var propSetter, unsubscribe;
-
         propSetter = $parse(prop).assign;
         unsubscribe = this.subscribe(function(e) {
           if (e.hasValue()) {
