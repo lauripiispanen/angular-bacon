@@ -8,7 +8,9 @@
         scope[watchMethod](watchExp, function(newValue) {
           return bus.push(newValue);
         }, objectEquality);
-        scope.$on('$destroy', bus.end);
+        scope.$on('$destroy', function() {
+          return bus.end();
+        });
         initialValue = scope.$eval(watchExp);
         if (typeof initialValue !== "undefined") {
           return bus.toProperty(initialValue);
@@ -31,7 +33,6 @@
       };
       return Bacon.Observable.prototype.digest = function($scope, prop) {
         var propSetter, unsubscribe;
-
         propSetter = $parse(prop).assign;
         unsubscribe = this.subscribe(function(e) {
           if (e.hasValue()) {
