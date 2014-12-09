@@ -36,6 +36,9 @@ For examples, see [here](examples/form-validation.js). This example somewhat mim
 Changelog
 ---------
 
+**1.3.2**
+Fix issue with end of bus not having its scope bound correctly on scope destruction callback.
+
 **1.3.1**
 
 Bump bacon.js to newer version.
