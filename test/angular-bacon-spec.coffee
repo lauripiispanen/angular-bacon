@@ -215,39 +215,42 @@ describe "rootScope", ->
                 scope.$emit('event', 'foo', 'bar');
                 expect(scopeReceivedEvent).toEqual true
 
-        it "streams events with named arguments", ->
+        it "streams events with arguments", ->
             inject ($rootScope) ->
                 scope = $rootScope.$new()
-                i = 0
-                
-                scope.$asEventStream('event')
-                    .map('.args.foo')
-                    .onValue (e) ->
-                        expect(e).toEqual = 'foo'
-                        i = i + 1
+                results = []
+                stream = scope.$asEventStream('event')
 
-                scope.$asEventStream('event')
-                    .map('.args.bar')
-                    .onValue (e) ->
-                        expect(e).toEqual = 'bar'
-                        i = i + 1
+                stream
+                    .map('.args.0')
+                    .onValue (e) -> results.push e
+
+                stream
+                    .map('.args.1')
+                    .onValue (e) -> results.push e
                 
                 scope.$emit('event', 'foo', 'bar');
 
-                expect(i).toEqual 2
+                expect(results).toEqual ['foo', 'bar']
 
         it "will stream $destroy event", ->
             inject ($rootScope) ->
                 scope = $rootScope.$new()
-            
+                value = false
                 ended = false
                 
-                scope.$asEventStream('$destroy').onValue ->
+                stream = scope.$asEventStream('$destroy')
+
+                stream.onValue ->
+                    value = true
+
+                stream.onEnd ->
                     ended = true
 
+                expect(value).toEqual false
                 expect(ended).toEqual false
 
                 scope.$destroy()
 
+                expect(value).toEqual true
                 expect(ended).toEqual true
-
