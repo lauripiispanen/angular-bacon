@@ -6,7 +6,7 @@ angular
             scope[watchMethod] watchExp, (newValue) ->
                 bus.push newValue
             , objectEquality
-            scope.$on '$destroy', bus.end
+            scope.$on '$destroy', () -> bus.end()
             initialValue = scope.$eval(watchExp)
             if typeof initialValue != "undefined"
                 bus.toProperty(initialValue)
