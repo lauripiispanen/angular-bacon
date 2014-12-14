@@ -13,13 +13,13 @@ angular
             else
                 bus.toProperty()
 
-        $rootScope.$watchAsProperty = (watchExp, objectEquality) ->
+        Object.getPrototypeOf($rootScope).$watchAsProperty = (watchExp, objectEquality) ->
             watcherBus this, watchExp, objectEquality, '$watch'
 
-        $rootScope.$watchCollectionAsProperty = (watchExp, objectEquality) ->
+        Object.getPrototypeOf($rootScope).$watchCollectionAsProperty = (watchExp, objectEquality) ->
             watcherBus this, watchExp, objectEquality, '$watchCollection'
 
-        $rootScope.digestObservables = (observables) ->
+        Object.getPrototypeOf($rootScope).digestObservables = (observables) ->
             self = this
             angular.forEach observables, (observable, key) ->
                 observable.digest self, key
