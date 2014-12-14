@@ -40,6 +40,9 @@ For examples, see [here](examples/form-validation.js). This example somewhat mim
 Changelog
 ---------
 
+**1.4.1**
+Add _package.json_ main module.
+
 **1.4.0**
 Add _$asEventStream(event)_.
 
