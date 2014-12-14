@@ -40,13 +40,19 @@ For examples, see [here](examples/form-validation.js). This example somewhat mim
 Changelog
 ---------
 
+**1.5.0**
+Augment isolate scopes with angular-bacon functions.
+
 **1.4.1**
+
 Add _package.json_ main module.
 
 **1.4.0**
+
 Add _$asEventStream(event)_.
 
 **1.3.2**
+
 Fix issue with end of bus not having its scope bound correctly on scope destruction callback.
 
 **1.3.1**
