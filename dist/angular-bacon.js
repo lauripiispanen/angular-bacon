@@ -20,13 +20,13 @@
           return bus.toProperty();
         }
       };
-      $rootScope.$watchAsProperty = function(watchExp, objectEquality) {
+      Object.getPrototypeOf($rootScope).$watchAsProperty = function(watchExp, objectEquality) {
         return watcherBus(this, watchExp, objectEquality, '$watch');
       };
-      $rootScope.$watchCollectionAsProperty = function(watchExp, objectEquality) {
+      Object.getPrototypeOf($rootScope).$watchCollectionAsProperty = function(watchExp, objectEquality) {
         return watcherBus(this, watchExp, objectEquality, '$watchCollection');
       };
-      $rootScope.digestObservables = function(observables) {
+      Object.getPrototypeOf($rootScope).digestObservables = function(observables) {
         var self;
 
         self = this;
