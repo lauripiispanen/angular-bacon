@@ -1,7 +1,8 @@
 {
   "name": "angular-bacon",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "bacon.js bindings for AngularJS",
+  "main": "dist/angular-bacon.js",
   "scripts": {
     "test": "grunt test"
   },
