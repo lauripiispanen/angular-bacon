@@ -36,13 +36,9 @@
         propSetter = $parse(prop).assign;
         unsubscribe = this.subscribe(function(e) {
           if (e.hasValue()) {
-            if (!$scope.$$phase && !$scope.$root.$$phase) {
-              return $scope.$apply(function() {
-                return propSetter($scope, e.value());
-              });
-            } else {
+            return $scope.$evalAsync(function() {
               return propSetter($scope, e.value());
-            }
+            });
           }
         });
         $scope.$on('$destroy', unsubscribe);
