@@ -40,7 +40,12 @@ For examples, see [here](examples/form-validation.js). This example somewhat mim
 Changelog
 ---------
 
+**1.5.1**
+
+Fix issue with root scope digest already in progress when digesting streams in directives.
+
 **1.5.0**
+
 Augment isolate scopes with angular-bacon functions.
 
 **1.4.1**

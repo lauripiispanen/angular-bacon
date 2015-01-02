@@ -1,6 +1,6 @@
 {
   "name": "angular-bacon",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "bacon.js bindings for AngularJS",
   "main": "dist/angular-bacon.js",
   "scripts": {
