@@ -2,10 +2,8 @@
   angular.module("angular-bacon", []).run([
     "$rootScope", "$parse", function($rootScope, $parse) {
       var watcherBus;
-
       watcherBus = function(scope, watchExp, objectEquality, watchMethod) {
         var bus, initialValue;
-
         bus = new Bacon.Bus;
         scope[watchMethod](watchExp, function(newValue) {
           return bus.push(newValue);
@@ -28,7 +26,6 @@
       };
       Object.getPrototypeOf($rootScope).digestObservables = function(observables) {
         var self;
-
         self = this;
         return angular.forEach(observables, function(observable, key) {
           return observable.digest(self, key);
@@ -36,11 +33,10 @@
       };
       Bacon.Observable.prototype.digest = function($scope, prop) {
         var propSetter, unsubscribe;
-
         propSetter = $parse(prop).assign;
         unsubscribe = this.subscribe(function(e) {
           if (e.hasValue()) {
-            if (!$scope.$$phase) {
+            if (!$scope.$$phase && !$scope.$root.$$phase) {
               return $scope.$apply(function() {
                 return propSetter($scope, e.value());
               });
@@ -54,14 +50,11 @@
       };
       return $rootScope.$asEventStream = function(event) {
         var $scope;
-
         $scope = this;
         return Bacon.fromBinder(function(sink) {
           var unsubscribe;
-
           unsubscribe = $scope.$on(event, function(event) {
             var ret;
-
             event.args = Array.prototype.slice.call(arguments, 1);
             ret = sink(event);
             if (ret === Bacon.noMore) {
