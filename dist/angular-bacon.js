@@ -1,4 +1,10 @@
 (function() {
+  var Bacon, angular;
+
+  Bacon = typeof require !== "undefined" && require !== null ? require('baconjs') : this.Bacon;
+
+  angular = typeof require !== "undefined" && require !== null ? require('angular') : this.angular;
+
   angular.module("angular-bacon", []).run([
     "$rootScope", "$parse", function($rootScope, $parse) {
       var watcherBus;
@@ -69,5 +75,9 @@
       };
     }
   ]);
+
+  if ((typeof module !== "undefined" && module !== null) && (module.exports != null)) {
+    module.exports = angular;
+  }
 
 }).call(this);

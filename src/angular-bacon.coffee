@@ -1,3 +1,6 @@
+Bacon = if require? then require('baconjs') else @Bacon
+angular = if require? then require('angular') else @angular
+
 angular
     .module("angular-bacon", [])
     .run ["$rootScope", "$parse", ($rootScope, $parse) ->
@@ -52,3 +55,5 @@ angular
 
                 unsubscribe
     ]
+
+if module? and module.exports? then module.exports = angular
