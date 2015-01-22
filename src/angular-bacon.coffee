@@ -28,10 +28,7 @@ angular
             propSetter = $parse(prop).assign
             unsubscribe = this.subscribe (e) ->
                 if (e.hasValue())
-                    if(!$scope.$$phase && !$scope.$root.$$phase)
-                        $scope.$apply ->
-                            propSetter($scope, e.value())
-                    else
+                    $scope.$evalAsync ->
                         propSetter($scope, e.value())
 
             $scope.$on '$destroy', unsubscribe

@@ -71,11 +71,13 @@ describe "rootScope", ->
 
             bus.digest $rootScope, 'foo'
 
-            expect($rootScope.foo).toBeUndefined()
+            $rootScope.$evalAsync ->
+                expect($rootScope.foo).toBeUndefined()
 
-            bus.push 'bar'
+                bus.push 'bar'
 
-            expect($rootScope.foo).toEqual 'bar'
+            $rootScope.$evalAsync ->
+                expect($rootScope.foo).toEqual 'bar'
 
     it "can chain on digest", ->
         inject ($rootScope) ->
@@ -83,13 +85,14 @@ describe "rootScope", ->
 
             bus.digest($rootScope, 'foo').digest($rootScope, 'bar')
 
-            expect($rootScope.foo).toBeUndefined()
-            expect($rootScope.bar).toBeUndefined()
+            $rootScope.$evalAsync ->
+                expect($rootScope.foo).toBeUndefined()
+                expect($rootScope.bar).toBeUndefined()
+                bus.push 'baz'
 
-            bus.push 'baz'
-
-            expect($rootScope.foo).toEqual 'baz'
-            expect($rootScope.bar).toEqual 'baz'
+            $rootScope.$evalAsync ->
+                expect($rootScope.foo).toEqual 'baz'
+                expect($rootScope.bar).toEqual 'baz'
 
     it "can digest even if $apply already in process", ->
         inject ($rootScope) ->
@@ -111,12 +114,14 @@ describe "rootScope", ->
                 second: bus2
                 third: bus3
 
-            bus.push 'foo'
-            bus2.push 'bar'
+            $rootScope.$evalAsync ->
+                bus.push 'foo'
+                bus2.push 'bar'
 
-            expect($rootScope.first).toEqual 'foo'
-            expect($rootScope.second).toEqual 'bar'
-            expect($rootScope.third).toBeUndefined()
+            $rootScope.$evalAsync ->
+                expect($rootScope.first).toEqual 'foo'
+                expect($rootScope.second).toEqual 'bar'
+                expect($rootScope.third).toBeUndefined()
 
     it "can digest on deeply nested properties of $scope", ->
         inject ($rootScope) ->
@@ -124,11 +129,13 @@ describe "rootScope", ->
 
             bus.digest $rootScope, 'foo.baz'
 
-            expect($rootScope.foo).toBeUndefined()
+            $rootScope.$evalAsync ->
+                expect($rootScope.foo).toBeUndefined()
 
-            bus.push 'bar'
+                bus.push 'bar'
 
-            expect($rootScope.foo.baz).toEqual 'bar'
+            $rootScope.$evalAsync ->
+                expect($rootScope.foo.baz).toEqual 'bar'
 
     it "ends the stream when the $scope is $destroyed", ->
         inject ($rootScope) ->
@@ -149,13 +156,16 @@ describe "rootScope", ->
             bus = new Bacon.Bus
             bus.digest scope, 'foo'
             
-            bus.push 'bar'
-            expect(scope.foo).toEqual 'bar'
+            $rootScope.$evalAsync ->
+                bus.push 'bar'
 
-            scope.$destroy()
+            $rootScope.$evalAsync ->
+                expect(scope.foo).toEqual 'bar'
+                scope.$destroy()
+                bus.push 'baz'
 
-            bus.push 'baz'
-            expect(scope.foo).toEqual 'bar'
+            $rootScope.$evalAsync ->
+                expect(scope.foo).toEqual 'bar'
 
     describe "$asEventStream", ->
         it "streams $emitted events with arguments", ->
