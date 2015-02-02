@@ -3,21 +3,24 @@
     "$rootScope", "$parse", function($rootScope, $parse) {
       var watcherBus;
       watcherBus = function(scope, watchExp, objectEquality, watchMethod) {
-        var bus, initialValue;
-        bus = new Bacon.Bus;
-        scope[watchMethod](watchExp, function(newValue, oldValue) {
-          if (newValue !== oldValue) {
-            return bus.push(newValue);
-          }
-        }, objectEquality);
-        scope.$on('$destroy', function() {
-          return bus.end();
-        });
+        var initialValue, stream;
         initialValue = scope.$eval(watchExp);
-        if (typeof initialValue !== "undefined") {
-          return bus.toProperty(initialValue);
+        stream = Bacon.fromBinder(function(sink) {
+          var unsubscribe;
+          unsubscribe = scope[watchMethod](watchExp, function(newValue, oldValue) {
+            if (newValue !== oldValue) {
+              return sink(new Bacon.Next(newValue));
+            }
+          }, objectEquality);
+          scope.$on('$destroy', function() {
+            return sink(new Bacon.End());
+          });
+          return unsubscribe;
+        });
+        if (initialValue != null) {
+          return stream.toProperty(initialValue);
         } else {
-          return bus.toProperty();
+          return stream.toProperty();
         }
       };
       Object.getPrototypeOf($rootScope).$watchAsProperty = function(watchExp, objectEquality) {
