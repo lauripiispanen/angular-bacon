@@ -5,8 +5,10 @@
       watcherBus = function(scope, watchExp, objectEquality, watchMethod) {
         var bus, initialValue;
         bus = new Bacon.Bus;
-        scope[watchMethod](watchExp, function(newValue) {
-          return bus.push(newValue);
+        scope[watchMethod](watchExp, function(newValue, oldValue) {
+          if (newValue !== oldValue) {
+            return bus.push(newValue);
+          }
         }, objectEquality);
         scope.$on('$destroy', function() {
           return bus.end();

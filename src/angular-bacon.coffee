@@ -3,8 +3,8 @@ angular
     .run ["$rootScope", "$parse", ($rootScope, $parse) ->
         watcherBus = (scope, watchExp, objectEquality, watchMethod) ->
             bus = new Bacon.Bus
-            scope[watchMethod] watchExp, (newValue) ->
-                bus.push newValue
+            scope[watchMethod] watchExp, (newValue, oldValue) ->
+                bus.push newValue unless newValue == oldValue
             , objectEquality
             scope.$on '$destroy', -> bus.end()
             initialValue = scope.$eval(watchExp)

@@ -27,7 +27,9 @@ describe "rootScope", ->
                 $rootScope.foo = 'bar'
 
             expect(values[0]).toEqual true
-            expect(values[1]).toEqual 'bar'
+
+            $rootScope.$evalAsync ->
+                expect(values[1]).toEqual 'bar'
 
     it "will not push an initial value if one isn't defined", ->
         inject ($rootScope) ->
@@ -38,7 +40,8 @@ describe "rootScope", ->
             $rootScope.$apply ->
                 $rootScope.foo = 'bar'
 
-            expect(values[0]).toEqual 'bar'
+            $rootScope.$evalAsync ->
+                expect(values[0]).toEqual 'bar'
 
     it "can create collection properties out of watch expressions", ->
         inject ($rootScope) ->
@@ -51,7 +54,9 @@ describe "rootScope", ->
                 $rootScope.coll = [1,2]
 
             expect(values[0]).toEqual [1]
-            expect(values[1]).toEqual [1,2]
+
+            $rootScope.$evalAsync ->
+                expect(values[1]).toEqual [1,2]
 
     it "will not push an initial collection value if one isn't defined", ->
         inject ($rootScope) ->
@@ -62,7 +67,8 @@ describe "rootScope", ->
             $rootScope.$apply ->
                 $rootScope.coll = [1,2]
 
-            expect(values[0]).toEqual [1,2]
+            $rootScope.$evalAsync ->
+                expect(values[0]).toEqual [1,2]
 
 
     it "can digest observables back to scope", ->
@@ -271,3 +277,15 @@ describe "rootScope", ->
 
                 expect(value).toEqual true
                 expect(ended).toEqual true
+
+        it "will not push initial value twice", ->
+            inject ($rootScope) ->
+                received = []
+                scope = $rootScope.$new()
+
+                scope.test = 'initial'
+                scope.$watchAsProperty('test').onValue (it) -> received.push(it)
+                scope.$digest()
+
+                scope.$evalAsync ->
+                    expect(received).toEqual ['initial']
