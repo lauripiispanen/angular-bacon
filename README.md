@@ -40,6 +40,10 @@ For examples, see [here](examples/form-validation.js). This example somewhat mim
 Changelog
 ---------
 
+**2.0.1**
+
+Update dependencies.
+
 **2.0.0**
 
 Use $evalAsync instead of $apply when digesting streams to scopes. This change is potentially backwards-incompatible for code that relies on synchronous digestion of streams.

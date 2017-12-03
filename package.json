@@ -1,6 +1,6 @@
 {
   "name": "angular-bacon",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "bacon.js bindings for AngularJS",
   "main": "dist/angular-bacon.js",
   "scripts": {
@@ -19,13 +19,10 @@
   "license": "MIT",
   "gitHead": "30a352c9628281091b87d15120574e336c95e339",
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.0",
-    "grunt-contrib-coffee": "~0.7.0",
-    "grunt-contrib-jasmine": "~0.4.2",
-    "grunt-contrib-clean": "~0.5.0"
-  },
-  "dependencies": {
-    "grunt-contrib-coffee": "^0.12.0"
+    "grunt": "~1.0.0",
+    "grunt-contrib-clean": "~1.1.0",
+    "grunt-contrib-coffee": "~2.0.0",
+    "grunt-contrib-jasmine": "~1.1.0",
+    "grunt-contrib-uglify": "~3.2.1"
   }
 }
